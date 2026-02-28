@@ -24,9 +24,9 @@
       <h3>FOR the Proposition</h3>
 
       <figure>
-				<img src="IMAGE_FILENAME" alt="" />
+				<img src="figure1.png" alt="Scatter plot showing the association between changes in abortion clinic numbers and abortion rates across U.S. states." />
 				<figcaption>
-					BRIEF CAPTION HERE.
+					States That Lost Abortion Clinics Saw Larger Declines in Abortion Rates
 				</figcaption>
 			</figure>
 
@@ -35,9 +35,21 @@
 			</p>
 
 			<ul>
-				<li>RATIONALE_1</li>
-				<li>RATIONALE_2</li>
-				<li>RATIONALE_3</li>
+				<li>Using percent change from 2017-2020 instead of raw counts</li>
+				<ul>
+					<li>Deception/Ernest Score: -1</li>
+					<li>I encoded both clinic availability and abortion outcomes using percent change over time rather than raw counts. Percent change makes trends comparable across states with very different baseline numbers and visually amplifies declines in states that began with few clinics. This choice strengthens the apparent association between clinic loss and abortion decline, though it can exaggerate the magnitude of change in low-volume states. I considered using absolute counts, but percent change more directly supports the comparative, cross-state argument I wanted to make.</li>
+				</ul>
+				<li>Using a scatterplot fitted with a linear trend line</li>
+				<ul>
+					<li>Deception/Ernest Score: -1.5</li>
+					<li>I used a scatterplot to show the relationship between clinic change and abortion rate change, and added a linear regression line to summarize the overall pattern. While the trend line is statistically valid, it visually implies a systematic relationship and invites causal interpretation, even though the data are observational. Including the trend line makes the takeaway more immediate and persuasive without introducing an explicit causal claim.</li>
+				</ul>
+				<li>Red dashed regression line</li>
+				<ul>
+					<li>Deception/Ernest Score: 0</li>
+					<li>The regression line is drawn in red with a dashed pattern to distinguish it from the data points and subtly draw the viewer’s attention. This choice increases the perceptual salience of the trend without using overtly emotive or sensational styling.</li>
+				</ul>
 			</ul>
     </section>
 
