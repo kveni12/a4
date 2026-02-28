@@ -19,7 +19,7 @@ df = df[[
 # Load US states shapefile (5m resolution)
 # -----------------------
 states = gpd.read_file("cb_2018_us_state_5m.shp")
-
+print(states.columns)
 # Remove territories
 states = states[~states["STUSPS"].isin(["PR", "VI", "GU", "MP", "AS"])]
 
