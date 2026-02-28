@@ -16,14 +16,18 @@ df = df[[
 ]].dropna()
 
 # -----------------------
-# Load US states shapefile (5m resolution)
+# Load US states shapefile
 # -----------------------
 states = gpd.read_file("cb_2018_us_state_5m.shp")
-print(states.columns)
-# Remove territories
-states = states[~states["STUSPS"].isin(["PR", "VI", "GU", "MP", "AS"])]
 
-# Merge shapefile with abortion data
+states = states[~states["NAME"].isin([
+    "Puerto Rico",
+    "Virgin Islands",
+    "Guam",
+    "Commonwealth of the Northern Mariana Islands",
+    "American Samoa"
+])]
+
 gdf = states.merge(
     df,
     left_on="NAME",
@@ -32,15 +36,20 @@ gdf = states.merge(
 )
 
 # -----------------------
-# Create multi-panel figure
+# Create figure layout (MAPS BIG)
 # -----------------------
-fig = plt.figure(figsize=(14, 6))
-gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 0.9])
+fig = plt.figure(figsize=(10, 12))
+gs = fig.add_gridspec(
+    nrows=3,
+    ncols=2,
+    height_ratios=[1.2, 1.2, 0.8],
+    width_ratios=[1, 1]
+)
 
 # -----------------------
-# Panel A: Travel choropleth
+# Panel A: Travel choropleth (full width)
 # -----------------------
-ax1 = fig.add_subplot(gs[0, 0])
+ax1 = fig.add_subplot(gs[0, :])
 gdf.plot(
     column="% of residents obtaining abortions who traveled out of state for care, 2020",
     ax=ax1,
@@ -53,9 +62,9 @@ ax1.set_title("Out-of-State Travel for Abortion Care (2020)")
 ax1.axis("off")
 
 # -----------------------
-# Panel B: Clinic access choropleth
+# Panel B: Clinic access choropleth (full width)
 # -----------------------
-ax2 = fig.add_subplot(gs[0, 1])
+ax2 = fig.add_subplot(gs[1, :])
 gdf.plot(
     column="% of counties without a known clinic, 2020",
     ax=ax2,
@@ -68,9 +77,9 @@ ax2.set_title("Counties Without an Abortion Clinic (2020)")
 ax2.axis("off")
 
 # -----------------------
-# Panel C: Scatterplot
+# Panel C: Scatterplot (bottom-left)
 # -----------------------
-ax3 = fig.add_subplot(gs[0, 2])
+ax3 = fig.add_subplot(gs[2, 0])
 
 x = df["% change in the no. of abortion clinics, 2017-2020"]
 y = df["% of residents obtaining abortions who traveled out of state for care, 2020"]
@@ -80,18 +89,24 @@ ax3.set_xlabel("% change in abortion clinics (2017–2020)")
 ax3.set_ylabel("% traveling out of state (2020)")
 ax3.set_title("Clinic Change vs. Travel")
 
-# Subtle regression line (contextual, not dominant)
+# Subtle regression line
 slope, intercept = np.polyfit(x, y, 1)
 x_line = np.linspace(x.min(), x.max(), 100)
 ax3.plot(x_line, slope * x_line + intercept, linestyle="--", color="gray")
 
 # -----------------------
-# Overall title and save
+# Bottom-right: empty space for visual breathing room
+# -----------------------
+ax4 = fig.add_subplot(gs[2, 1])
+ax4.axis("off")
+
+# -----------------------
+# Overall title
 # -----------------------
 fig.suptitle(
     "Clinic Reductions Coincide with Increased Travel and Limited Local Access",
     fontsize=14,
-    y=1.03
+    y=0.98
 )
 
 plt.tight_layout()
